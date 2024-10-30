@@ -12,6 +12,10 @@ import type { RenderParams, CaptchaProps, Subscriptions, WidgetId } from '@/type
 
 const container = ref<HTMLDivElement>()
 
+const emit = defineEmits<{
+    (e: 'widgetInitialized', widgetId: WidgetId): void
+}>()
+
 const props = withDefaults(defineProps<RenderParams & CaptchaProps & Subscriptions>(), {
     loadWidget: true,
     timeout: 2000,
@@ -72,6 +76,7 @@ const initWidget = () => {
                 hideShield: props.hideShield,
             })
 
+            emit('widgetInitialized', widgetId)
             subscribe(widgetId)           
         }
     }, props.timeout / totalAttempts)
